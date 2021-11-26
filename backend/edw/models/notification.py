@@ -24,6 +24,7 @@ from edw.models.mixins.notification import NotificationMixin
 from edw.models.fields.notification import MultiSelectField
 from edw.settings import APP_LABEL
 from edw.utils.common import get_from_address
+from edw_fluent.utils import remove_emoji
 
 import logging
 
@@ -338,7 +339,7 @@ class Notification(models.Model):
                     recipient_serialaizer_cls = recipient[2]
                     context['recipient'] = recipient_serialaizer_cls(recipient[1]).data
 
-                    mail.send(recipient[0], sender=sender, template=template, context=context,
+                    mail.send(remove_emoji(recipient[0]), sender=sender, template=template, context=context,
                               attachments=attachments, render_on_delivery=True)
 
         elif mode == 'push' and push is not None:
